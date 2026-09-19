@@ -51,7 +51,7 @@ export const Nav = () => {
             window.dispatchEvent(new PopStateEvent("popstate"));
           }}
           data-testid="nav-cta"
-          className="rounded-full bg-white/5 px-5 py-2 font-mono text-xs uppercase tracking-widest text-foreground transition-colors hover:bg-white/10"
+          className="cta-primary rounded-full px-5 py-2 font-mono text-xs uppercase tracking-widest"
         >
           Start creating
         </button>

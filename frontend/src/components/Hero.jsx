@@ -63,7 +63,7 @@ export const Hero = ({ onGenerate, generating }) => {
           <button
             onClick={openAuth}
             data-testid="hero-cta"
-            className="group flex items-center gap-3 rounded-full bg-primary px-7 py-4 font-mono text-sm font-bold uppercase tracking-wider text-primary-foreground shadow-[0_0_50px_rgba(255,69,0,0.22)] transition-all hover:-translate-y-1 hover:bg-[hsl(16_100%_45%)] hover:shadow-[0_0_70px_rgba(255,69,0,0.38)] active:scale-95"
+            className="cta-primary group flex items-center gap-3 rounded-full px-7 py-4 font-mono text-sm font-bold uppercase tracking-wider"
           >
             Create your first video
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />

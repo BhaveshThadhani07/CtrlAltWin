@@ -143,7 +143,7 @@ export default function Studio() {
               <button
                 type="submit"
                 disabled={generating}
-                className="inline-flex w-full items-center justify-center gap-3 rounded-2xl bg-primary px-5 py-3.5 font-mono text-xs uppercase tracking-[0.2em] text-primary-foreground transition-all hover:bg-[hsl(16_100%_45%)] disabled:cursor-not-allowed disabled:opacity-70"
+                className="cta-primary inline-flex w-full items-center justify-center gap-3 rounded-2xl px-5 py-3.5 font-mono text-xs font-bold uppercase tracking-[0.2em]"
               >
                 {generating ? (
                   <>

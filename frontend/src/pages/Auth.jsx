@@ -222,7 +222,7 @@ export default function Auth() {
                 </button>
               </div>
             </label>
-            <button type="submit" className="group mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-3.5 font-mono text-xs font-bold uppercase tracking-wider text-primary-foreground transition-all hover:bg-[hsl(16_100%_45%)]">
+            <button type="submit" className="cta-primary group mt-2 flex w-full items-center justify-center gap-2 rounded-xl py-3.5 font-mono text-xs font-bold uppercase tracking-wider">
               {mode === "signup" ? "Create free account" : "Sign in"}
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </button>

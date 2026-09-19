@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { PenLine, Image, Volume2, Clapperboard, Zap, LayoutTemplate } from "lucide-react";
+import { PenLine, Image, Volume2, Clapperboard, Zap, LayoutTemplate, Share2 } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -41,6 +41,12 @@ const FEATURES = [
     title: "Your own library",
     body: "Every video you make is saved and replayable, anytime.",
     span: "",
+  },
+  {
+    icon: Share2,
+    title: "Ready to share",
+    body: "Create a polished link-ready story for a pitch, launch, lesson, or update — without exporting, editing, or chasing files.",
+    span: "md:col-span-3",
   },
 ];
 
