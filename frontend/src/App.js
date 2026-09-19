@@ -4,10 +4,11 @@ import { ReactLenis } from "lenis/react";
 import { Toaster } from "sonner";
 import Landing from "@/pages/Landing";
 import Auth from "@/pages/Auth";
+import Studio from "@/pages/Studio";
 import { NoiseOverlay } from "@/components/NoiseOverlay";
 
 function App() {
-  const [path, setPath] = useState(window.location.pathname);
+  const [path, setPath] = useState(window.location.pathname + window.location.hash);
 
   useEffect(() => {
     const onRouteChange = () => setPath(window.location.pathname + window.location.hash);
@@ -20,11 +21,26 @@ function App() {
     };
   }, []);
 
+  const session = (() => {
+    try {
+      return JSON.parse(localStorage.getItem("presentor_session") || "null");
+    } catch {
+      return null;
+    }
+  })();
+
+  const renderPage = () => {
+    if (path === "/studio" || path.endsWith("#studio")) return <Studio />;
+    if (path === "/auth" || path.endsWith("#auth")) return <Auth />;
+    if (session && (path === "/" || path === "")) return <Studio />;
+    return <Landing />;
+  };
+
   return (
     <ReactLenis root options={{ lerp: 0.08, smoothWheel: true }}>
       <div className="App min-h-screen bg-background text-foreground">
         <NoiseOverlay />
-        {path === "/auth" || path.endsWith("#auth") ? <Auth /> : <Landing />}
+        {renderPage()}
         <Toaster
           theme="dark"
           position="bottom-center"

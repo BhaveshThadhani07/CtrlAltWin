@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ArrowLeft, ArrowRight, Check, Eye, EyeOff, LockKeyhole, Sparkles } from "lucide-react";
+import { toast } from "sonner";
 
 const BENEFITS = [
   "Turn a rough idea into a polished video",
@@ -7,16 +8,88 @@ const BENEFITS = [
   "Your entire video library in one place",
 ];
 
+const readUsers = () => {
+  try {
+    return JSON.parse(localStorage.getItem("presentor_users") || "[]");
+  } catch {
+    return [];
+  }
+};
+
+const persistUsers = (users) => {
+  localStorage.setItem("presentor_users", JSON.stringify(users));
+};
+
+const nextPath = (path) => {
+  if (path === "auth") {
+    window.history.pushState({}, "", "/auth");
+  } else {
+    window.history.pushState({}, "", "/studio");
+  }
+  window.dispatchEvent(new PopStateEvent("popstate"));
+};
+
 export default function Auth() {
   const [mode, setMode] = useState("signup");
   const [showPassword, setShowPassword] = useState(false);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const goHome = () => {
-    window.location.hash = "";
+    window.history.pushState({}, "", "/");
+    window.dispatchEvent(new PopStateEvent("popstate"));
   };
 
   const submit = (event) => {
     event.preventDefault();
+
+    const trimmedName = name.trim();
+    const trimmedEmail = email.trim().toLowerCase();
+    const trimmedPassword = password.trim();
+
+    if (!trimmedEmail || !trimmedPassword || (mode === "signup" && !trimmedName)) {
+      toast.error("Please complete all required fields.");
+      return;
+    }
+
+    if (trimmedPassword.length < 8) {
+      toast.error("Password must be at least 8 characters long.");
+      return;
+    }
+
+    const users = readUsers();
+
+    if (mode === "signup") {
+      const existing = users.find((user) => user.email === trimmedEmail);
+      if (existing) {
+        toast.error("An account with that email already exists.");
+        return;
+      }
+
+      const user = { name: trimmedName, email: trimmedEmail, password: trimmedPassword };
+      persistUsers([...users, user]);
+      localStorage.setItem("presentor_session", JSON.stringify({ name: trimmedName, email: trimmedEmail }));
+      toast.success("Welcome aboard. Your studio is ready.");
+      nextPath("studio");
+      return;
+    }
+
+    const existingUser = users.find(
+      (user) => user.email === trimmedEmail && user.password === trimmedPassword,
+    );
+
+    if (!existingUser) {
+      toast.error("We couldn’t find a matching account. Please check your details.");
+      return;
+    }
+
+    localStorage.setItem(
+      "presentor_session",
+      JSON.stringify({ name: existingUser.name, email: existingUser.email }),
+    );
+    toast.success("Signed in successfully.");
+    nextPath("studio");
   };
 
   return (
@@ -110,12 +183,26 @@ export default function Auth() {
             {mode === "signup" && (
               <label className="block">
                 <span className="mb-2 block text-xs font-semibold text-muted-foreground">Your name</span>
-                <input required type="text" placeholder="Alex Morgan" className="auth-input" />
+                <input
+                  required
+                  type="text"
+                  value={name}
+                  onChange={(event) => setName(event.target.value)}
+                  placeholder="Alex Morgan"
+                  className="auth-input"
+                />
               </label>
             )}
             <label className="block">
               <span className="mb-2 block text-xs font-semibold text-muted-foreground">Email address</span>
-              <input required type="email" placeholder="you@company.com" className="auth-input" />
+              <input
+                required
+                type="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                placeholder="you@company.com"
+                className="auth-input"
+              />
             </label>
             <label className="block">
               <span className="mb-2 block text-xs font-semibold text-muted-foreground">Password</span>
@@ -124,6 +211,8 @@ export default function Auth() {
                 <input
                   required
                   minLength={8}
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
                   type={showPassword ? "text" : "password"}
                   placeholder="At least 8 characters"
                   className="auth-input pl-11 pr-11"

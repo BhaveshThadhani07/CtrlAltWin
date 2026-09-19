@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight, Check, Clapperboard, Play, Sparkles } from "lucide-react";
 
 export const Hero = ({ onGenerate, generating }) => {
   const rootRef = useRef(null);
@@ -17,7 +17,8 @@ export const Hero = ({ onGenerate, generating }) => {
   }, []);
 
   const openAuth = () => {
-    window.location.hash = "auth";
+    window.history.pushState({}, "", "/studio");
+    window.dispatchEvent(new PopStateEvent("popstate"));
   };
 
   return (
@@ -74,6 +75,56 @@ export const Hero = ({ onGenerate, generating }) => {
                 {item}
               </span>
             ))}
+          </div>
+        </div>
+
+        <div className="hero-preview mt-16 w-full max-w-5xl rounded-[28px] border border-white/10 bg-black/35 p-3 shadow-2xl shadow-black/30 backdrop-blur-xl md:p-4">
+          <div className="relative overflow-hidden rounded-[20px] border border-white/10 bg-[#171310]">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_20%,rgba(255,92,35,0.28),transparent_34%),linear-gradient(120deg,rgba(255,255,255,0.04),transparent_45%)]" />
+            <div className="relative grid min-h-[250px] items-end gap-8 p-6 md:grid-cols-[1fr_0.7fr] md:p-10">
+              <div className="max-w-xl">
+                <div className="mb-8 flex items-center gap-2 font-mono text-[0.65rem] uppercase tracking-[0.2em] text-primary">
+                  <span className="h-2 w-2 rounded-full bg-primary onair-dot" />
+                  A real presenter video, generated for you
+                </div>
+                <p className="font-display text-3xl font-black leading-tight tracking-tight md:text-5xl">
+                  Your next big idea,
+                  <span className="block text-primary">already in motion.</span>
+                </p>
+                <div className="mt-8 flex items-center gap-4">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                    <Play className="ml-0.5 h-4 w-4 fill-current" />
+                  </div>
+                  <div className="h-1.5 w-44 overflow-hidden rounded-full bg-white/10">
+                    <div className="h-full w-2/5 rounded-full bg-primary" />
+                  </div>
+                  <span className="font-mono text-[0.65rem] text-white/45">00:18 / 00:42</span>
+                </div>
+              </div>
+              <div className="hidden justify-end md:flex">
+                <div className="w-56 rounded-2xl border border-white/10 bg-black/35 p-4 backdrop-blur-md">
+                  <div className="mb-5 flex items-center justify-between">
+                    <span className="font-mono text-[0.6rem] uppercase tracking-widest text-white/40">Generated</span>
+                    <Clapperboard className="h-4 w-4 text-primary" />
+                  </div>
+                  <div className="space-y-3">
+                    {["Script written", "Visuals composed", "Voiceover synced"].map((item) => (
+                      <div key={item} className="flex items-center gap-2 text-xs text-white/75">
+                        <Check className="h-3.5 w-3.5 text-primary" />
+                        {item}
+                      </div>
+                    ))}
+                  </div>
+                  <div className="mt-6 flex items-center gap-2 border-t border-white/10 pt-4 font-mono text-[0.6rem] uppercase tracking-wider text-white/40">
+                    <Sparkles className="h-3.5 w-3.5 text-primary" /> Ready to share
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-wrap items-center justify-between gap-3 px-2 pt-4 text-[0.65rem] font-mono uppercase tracking-widest text-white/30">
+            <span>One prompt to polished presenter video</span>
+            <span className="text-primary/70">Built for ideas that deserve attention</span>
           </div>
         </div>
       </div>
